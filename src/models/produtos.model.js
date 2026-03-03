@@ -3,12 +3,11 @@ import pool from "../config/db.js";
 const produtoModel = {
     insert:async (pProduto) => {
         const sql = 'INSERT INTO Produtos (idCategoria, nomeproduto, valorproduto, vinculoimgaem) VALUES (?,?,?,?)';
-        //cada interrogação recebe um valor, e que elas são sequenciais. Ex:o 'nome' é o 1º '?'
         const values = [pProduto.idCategoria, pProduto.nomeproduto, pProduto.valorproduto, pProduto.vinculoimgaem];
         const [rows] = await pool.execute(sql, values);
         return rows;
     },
-     selectAll: async () => {
+     selecionarTodos: async () => {
         const sql = "SELECT * FROM produtos;";
         const [rows] = await pool.execute(sql);
         return rows;
@@ -39,11 +38,10 @@ const produtoModel = {
                 return res.status(400).json({ erro: 'id do produto inválido!' })
             }
 
-            const produto = await produtoModel.buscarUm(idProduto);
-
+            const produto = await produtoModel.buscarUm(idproduto);
 
             if (!produto || produto.length !== 1) {
-                return res.status(404).json({ error: 'Produto não encontrado!!!!!' })
+                return res.status(404).json({ error: 'Produto não encontrado!' })
             }
 
 
@@ -54,7 +52,7 @@ const produtoModel = {
             const vinculoimgaemAtualizado = vinculoimgaem ?? produtoAtual.vinculoimgaem;
 
 
-            await produtoModel.atualizarProduto(idProduto,nomeprodutoAtualizado, valorprodutoAtualizado, vinculoimgaemAtualizado);
+            await produtoModel.atualizarProduto(idproduto,nomeprodutoAtualizado, valorprodutoAtualizado, vinculoimgaemAtualizado);
 
             return res.status(200).json({ message: 'Produto atualizado com sucesso' })
         } catch (error) {
@@ -64,7 +62,7 @@ const produtoModel = {
     },
     deletarProduto: async (req, res) => {
         try {
-            const { idProduto } = req.params; 
+            const { idproduto } = req.params; 
 
             if (idproduto.length != 36) {
                 return res.status(400).json({ erro: 'id do produto inválido!' })
@@ -86,6 +84,5 @@ const produtoModel = {
     }
 
 }
-
 
 export default produtoModel;

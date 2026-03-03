@@ -27,12 +27,12 @@ const produtoController = {
 
    listarProdutos: async(req, res) => {
     try{
-        const { id_produto } = req.query;
-        if (id_produto) {
-            if (id_produto.length!=36) {
+        const { idproduto } = req.query;
+        if (idproduto) {
+            if (idproduto.length!=36) {
                 return res.status(400).json({erro: 'Id do produto não encontrado'})
             }
-            const produto = await produtoModel.buscarUm(id_produto);
+            const produto = await produtoModel.buscarUm(idproduto);
             res.status(200).json(produto);
         }
         const produtos = await produtoModel.buscarTodos();
@@ -74,15 +74,15 @@ const produtoController = {
 
     atualizarProduto: async (req,res) => {
         try {
-            const{id_produto} = req.params; 
+            const{idproduto} = req.params; 
             const {nomeproduto, valorproduto} = req.body; //eles vão vir da requisição
             
-            if(id_produto.length !=36){
+            if(idproduto.length !=36){
                 return res.status(400).json({erro: 'id do produto inválido!'});
             }
             
             
-            const produto = await produtoModel.buscarUm(id_produto);
+            const produto = await produtoModel.buscarUm(idproduto);
             //Ver se o produto existe👇
             if (!produto || produto.length !== 1) {
                return res.status(404).json({error:'Produto não encontrado!'}); 
@@ -93,7 +93,7 @@ const produtoController = {
             const nomeprodutoAtualizado = nomeproduto ?? produtoAtual.nomeproduto;
             const valorprodutoAtualizado = valorproduto ?? produtoAtual.valorproduto;
 
-            await produtoModel.atualizarProduto(id_produto, nomeprodutoAtualizado, valorprodutoAtualizado);
+            await produtoModel.atualizarProduto(idproduto, nomeprodutoAtualizado, valorprodutoAtualizado);
             
             res.status(200).json({message: 'Produto atualizado com sucesso!'})
         } catch (error) {
@@ -104,18 +104,18 @@ const produtoController = {
 
     deletarProduto: async (req,res) => {
         try {
-            const{id_produto} = req.params; 
+            const{idproduto} = req.params; 
             
-            if(id_produto.length !=36){
+            if(idproduto.length !=36){
                 return res.status(400).json({erro: 'id do produto inválido!'});
             }
-             const produto = await produtoModel.buscarUm(id_produto);
+             const produto = await produtoModel.buscarUm(idproduto);
             //Ver se o produto existe👇
             if (!produto || produto.length !== 1) {
                return res.status(404).json({error:'Produto não encontrado!'}); 
             }
 
-            await produtoModel.deletarProduto(id_produto); 
+            await produtoModel.deletarProduto(idproduto); 
             res.status(200).json({message: 'Produto deletado com sucesso!'});
         } catch (error) {
             console.error('Erro ao deletar produto:', error);
