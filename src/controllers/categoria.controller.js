@@ -24,17 +24,8 @@ const categoriaController = {
         }
     },
 
-    listarCategorias: async (req, res) => {
-        try {
-            const categorias = await categoriaModel.buscarCategoria();
-            return res.status(200).json(categorias);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro no servidor', errorMessage: error.message });
-        }
-    },
 
-    buscarCategoria: async (req, res) => {
+    listarCategoria: async (req, res) => {
         try {
             const { idCategoria } = req.params;
             const categoria = await categoriaModel;
