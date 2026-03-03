@@ -26,7 +26,7 @@ const categoriaController = {
 
     listarCategorias: async (req, res) => {
         try {
-            const categorias = await categoriaModel.selectAll();
+            const categorias = await categoriaModel.buscarCategoria();
             return res.status(200).json(categorias);
         } catch (error) {
             console.error(error);
