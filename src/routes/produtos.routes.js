@@ -1,10 +1,12 @@
 import produtoController from "../controllers/produto.controller.js";
-import uploadImage from "../middlewares/uploadImage.middlware.js";
 import { Router } from "express";
 
 const produtoRoutes = Router();
 
-produtoRoutes.post('/produtos/imagens', uploadImage, produtoController.upload);
+produtoRoutes.post('/produtos', produtoController);
+produtoRoutes.get('/produtos', produtoController);
+produtoRoutes.delete('/produtos', produtoController);
+produtoRoutes.put('/produtos', produtoController);
 
 
 export default produtoRoutes
