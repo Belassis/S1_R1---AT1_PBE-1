@@ -40,7 +40,7 @@ const categoriaController = {
             const categoria = await categoriaModel;
 
             if (!categoria) {
-                return res.status(404).json({ message: 'Acho que a sua categoria não encontrada!' });
+                return res.status(404).json({ message: 'Categoria não encontrada!' });
             }
 
             return res.status(200).json(categoria);
@@ -55,10 +55,10 @@ const categoriaController = {
             const { descricaoCategoria } = req.body;
 
             if (!descricaoCategoria) {
-                return res.status(400).json({ message: 'Descrição não ´preenchida!' });
+                return res.status(400).json({ message: 'Descrição não preenchida!' });
             }
 
-            const categoriaExistente = await categoriaModel.selectById(id);
+            const categoriaExistente = await categoriaModel.idCategoria(id);
             if (!categoriaExistente) {
                 return res.status(404).json({ message: 'Acho que a sua categoria não encontrada!' });
             }
@@ -75,7 +75,7 @@ const categoriaController = {
         try {
             const { idCategoria } = req.params;
 
-            const categoriaExistente = await categoriaModel.selectById(id);
+            const categoriaExistente = await categoriaModel.idCategoria(id);
             if (!categoriaExistente) {
                 return res.status(404).json({ message: 'Categoria não encontrada' });
             }
