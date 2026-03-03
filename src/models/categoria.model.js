@@ -7,7 +7,7 @@ const categoriaModel = {
         const [rows] = await pool.execute(sql, values);
         return rows;
     },
-    SelecionarTodos: async () => {
+    Listar: async () => {
         const sql = "SELECT * FROM categoria ORDER BY idCategoria DESC";
         const [rows] = await pool.execute(sql);
         return rows;
