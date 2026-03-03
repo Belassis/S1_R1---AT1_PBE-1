@@ -1,30 +1,47 @@
-import pool from "../config/db.js";
+import pool from "../config/database.js";
 
 const categoriaModel = {
-    criarCategoria: async (pCategoria) => {
-        const sql = 'INSERT INTO categoria (descricaoCategoria) VALUES (?)';
-        const values = [pCategoria.descricaoCategoria];
-        const [rows] = await pool.execute(sql, values);
-        return rows;
-    },
-    listarCategorias: async () => {
-        const sql = "SELECT * FROM categoria ORDER BY idCategoria DESC";
-        const [rows] = await pool.execute(sql);
-        return rows;
-    },
 
-    atualizarCategoria: async (pCategoria) => {
-        const sql = 'UPDATE categoria SET descricaoCategoria = ? WHERE idCategoria = ?';
-        const values = [pCategoria.descricaoCategoria, pCategoria.idCategoria];
-        const [rows] = await pool.execute(sql, values);
-        return rows;
-    },
+  async listar() {
+    const [rows] = await pool.query("SELECT * FROM categorias");
+    return rows;
+  },
 
-    deletarCategoria: async (idCategoria) => {
-        const sql = 'DELETE FROM categoria WHERE idCategoria = ?';
-        const [rows] = await pool.execute(sql, [idCategoria]);
-        return rows;
-    }
-}
+  async buscarPorId(idCategoria) {
+    const [rows] = await pool.query(
+      "SELECT * FROM categorias WHERE idCategoria = ?",
+      [idCategoria]
+    );
 
-export default categoriaModel; 
+    return rows[0];
+  },
+
+  async criar({ nomeCategoria }) {
+    const [result] = await pool.query(
+      "INSERT INTO categorias (nomeCategoria) VALUES (?)",
+      [nomeCategoria]
+    );
+
+    return {
+      idCategoria: result.insertId,
+      nomeCategoria
+    };
+  },
+
+  async atualizar(idCategoria, { nomeCategoria }) {
+    await pool.query(
+      "UPDATE categorias SET nomeCategoria = ? WHERE idCategoria = ?",
+      [nomeCategoria, idCategoria]
+    );
+  },
+
+  async deletar(idCategoria) {
+    await pool.query(
+      "DELETE FROM categorias WHERE idCategoria = ?",
+      [idCategoria]
+    );
+  }
+
+};
+
+export default categoriaModel;
